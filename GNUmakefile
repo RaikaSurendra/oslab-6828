@@ -87,7 +87,7 @@ CFLAGS := $(CFLAGS) $(DEFS) $(LABDEFS) -O1 -fno-builtin -I$(TOP) -MD
 CFLAGS += -fno-omit-frame-pointer
 CFLAGS += -std=gnu99
 CFLAGS += -static
-CFLAGS += -Wall -Wno-format -Wno-unused -Werror -gstabs -m32
+CFLAGS += -Wall -Wno-format -Wno-unused -Werror -m32
 # -fno-tree-ch prevented gcc from sometimes reordering read_ebp() before
 # mon_backtrace()'s function prologue on gcc version: (Debian 4.7.2-5) 4.7.2
 CFLAGS += -fno-tree-ch
@@ -120,8 +120,8 @@ all:
 	   $(OBJDIR)/lib/%.o $(OBJDIR)/fs/%.o $(OBJDIR)/net/%.o \
 	   $(OBJDIR)/user/%.o
 
-KERN_CFLAGS := $(CFLAGS) -DJOS_KERNEL -gstabs
-USER_CFLAGS := $(CFLAGS) -DJOS_USER -gstabs
+KERN_CFLAGS := $(CFLAGS) -DJOS_KERNEL
+USER_CFLAGS := $(CFLAGS) -DJOS_USER
 
 # Update .vars.X if variable X has changed since the last make run.
 #
@@ -129,7 +129,7 @@ USER_CFLAGS := $(CFLAGS) -DJOS_USER -gstabs
 # the variable's value has changed, this will update the vars file and
 # force a rebuild of the rule that depends on it.
 $(OBJDIR)/.vars.%: FORCE
-	$(V)echo "$($*)" | cmp -s $@ || echo "$($*)" > $@
+	$(V)echo "$($*)" | cmp -s - $@ || echo "$($*)" > $@
 .PRECIOUS: $(OBJDIR)/.vars.%
 .PHONY: FORCE
 
